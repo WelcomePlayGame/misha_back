@@ -1,5 +1,6 @@
 package app.shop.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,5 +50,8 @@ public class Conf implements WebMvcConfigurer {
         registry.addResourceHandler("/app/upload/**", "/upload/**")
                 .addResourceLocations("file:/app/upload/", "file:./upload/");
     }
-
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 }

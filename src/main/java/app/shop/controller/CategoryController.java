@@ -1,5 +1,6 @@
 package app.shop.controller;
 
+import app.shop.dto.CategoryDTO;
 import app.shop.entity.Category;
 import app.shop.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +17,22 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService service;
     @GetMapping
-    public ResponseEntity<List<Category>> getAll() {
+    public ResponseEntity<List<CategoryDTO>> getAll() {
         return ResponseEntity.ok().body(service.getAll());
     }
     @PostMapping(value = "add/")
-    public ResponseEntity<Category> add (@RequestBody Category category){
+    public ResponseEntity<CategoryDTO> add (@RequestBody Category category){
         log.info(category.getTitle());
         return ResponseEntity.ok().body(service.add(category));
     }
-    @DeleteMapping(value = "delete/{id}")
-    public ResponseEntity<Category> delete(@PathVariable long id) {
+    @DeleteMapping(value = "delete/{id}/")
+    public ResponseEntity<CategoryDTO> delete(@PathVariable long id) {
         service.delete(id);
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping(value = "/update/")
+    public ResponseEntity<CategoryDTO> update(@RequestBody Category category) {
+        return ResponseEntity.ok().body(service.update(category));
     }
 }
