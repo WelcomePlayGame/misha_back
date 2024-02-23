@@ -53,4 +53,39 @@ public class ProductService {
         Product product = repository.findById(id).orElseThrow(()-> new EntityNotFoundException("No id Product"));
         return product;
     }
+
+    @Transactional
+    public void delete(long id) {
+        repository.deleteById(id);
+    }
+
+    @Transactional
+    public Product update(Product product, List<MultipartFile> photos) {
+        Product productUpdate = repository.findById(product.getId()).orElseThrow(()-> new EntityNotFoundException("No id product"));
+        Category categoryUpdate = repository_category.findById(product.getCategory().getId()).orElseThrow(()-> new EntityNotFoundException("No id category"));
+        List<String> listUrl = new ArrayList<>();
+        for (MultipartFile file : photos) {
+            String name = WorkWithFile.generateNameFile(file);
+            WorkWithFile.createDirectory(UPLOAD_PRODUCT, name, file);
+            listUrl.add(URL_BASE+ URL_PRODUCT+"/"+name);
+        }
+        if (product.getTitle()!=null) {
+            productUpdate.setTitle(product.getTitle());
+        }
+        if (product.getDesribe()!=null) {
+            productUpdate.setDesribe(productUpdate.getDesribe());
+        }
+        if (product.getCost() !=null) {
+            productUpdate.setCost(product.getCost());
+        }
+        if (product.getNew_cost() != null) {
+            productUpdate.setNew_cost(product.getNew_cost());
+        }
+       if (product.isPromotion()) {
+           productUpdate.setPromotion(product.isPromotion());
+       }
+        productUpdate.setPhoto(listUrl);
+        productUpdate.setCategory(categoryUpdate);
+        return productUpdate;
+    }
 }

@@ -28,7 +28,7 @@ public class Product {
     private Double new_cost;
     @Column(name = "promotion")
     private boolean promotion;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
     @Column(name = "photo")

@@ -31,5 +31,13 @@ public class ProductController {
     }
     return ResponseEntity.ok().body(service.add(product, photos));
     }
-
+    @DeleteMapping(value = "delete/{id}/")
+    public ResponseEntity<Product> delete(@PathVariable long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+    @PutMapping(value = "update")
+    public ResponseEntity<Product> update(@RequestPart Product product, @RequestPart List<MultipartFile> photos) {
+    return ResponseEntity.ok().body(service.update(product, photos));
+    }
 }
